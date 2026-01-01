@@ -1,0 +1,6 @@
+name: SolidUnderground
+version: '1.0-SNAPSHOT'
+main: me.lukiiy.solidUnderground.SolidUnderground
+load: STARTUP
+authors: [ Lukiiy ]
+description: A silly plugin that gives a new way of experiencing the 404 challenge in b1.7.3
