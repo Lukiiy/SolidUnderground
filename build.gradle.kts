@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation(files("lib/cb1060.jar"))
+    compileOnly(files("lib/cb1060.jar"))
     implementation(kotlin("stdlib-jdk8"))
 }
 
