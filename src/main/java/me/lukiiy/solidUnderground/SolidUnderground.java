@@ -1,6 +1,7 @@
 package me.lukiiy.solidUnderground;
 
 import net.minecraft.server.WorldServer;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftWorld;
@@ -10,12 +11,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SolidUnderground extends JavaPlugin {
     private static SolidUnderground instance = null;
 
     private final Map<Player, RunData> runMap = new HashMap<>();
     private State state = State.INACTIVE;
+    private int worldTickTask = -1;
 
     private long startTime = 0;
 
@@ -60,6 +63,37 @@ public class SolidUnderground extends JavaPlugin {
             p.teleport(world.getSpawnLocation());
             runMap.put(p, data);
         });
+
+        AtomicBoolean warnedGettingDark = new AtomicBoolean(false);
+        AtomicBoolean warnedNight = new AtomicBoolean(false);
+
+        worldTickTask = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
+            long time = world.getTime();
+
+            if (time < 11000) {
+                warnedGettingDark.set(false);
+                warnedNight.set(false);
+            }
+
+            if (time >= 11000 && !warnedGettingDark.get()) {
+                warnedGettingDark.set(true);
+
+                Bukkit.getServer().broadcastMessage("§cIt's getting dark. All players must head into the hole!");
+            }
+
+            if (time >= 13000 && !warnedNight.get()) {
+                warnedNight.set(true);
+
+                Bukkit.getServer().broadcastMessage("§cIt's dark. All players must be in the hole.");
+            }
+
+            if (time >= 15000 && time < 23000) Arrays.stream(Bukkit.getServer().getOnlinePlayers())
+                    .filter(p -> {
+                        RunData data = runMap.get(p);
+
+                        return data != null && !data.inHole;
+                    }).forEach(p -> p.damage(2));
+        }, 20L, 20L); // every second
     }
 
     public void eliminate(Player player) {
