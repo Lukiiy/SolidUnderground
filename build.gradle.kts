@@ -1,7 +1,5 @@
 plugins {
     java
-    kotlin("jvm") version "2.3.0"
-    id("com.gradleup.shadow") version "8.3.0"
 }
 
 group = "me.lukiiy"
@@ -12,23 +10,10 @@ repositories {
 }
 
 dependencies {
-    compileOnly(files("lib/cb1060.jar"))
-    implementation(kotlin("stdlib-jdk8"))
+    compileOnly(files("lib/craftbukkit-1060.jar"))
 }
 
 tasks {
-    shadowJar {
-        archiveClassifier.set("")
-        mergeServiceFiles()
-        minimize()
-    }
-
-    jar { enabled = false }
-
-    build {
-        dependsOn("shadowJar")
-    }
-
     processResources {
         val props = mapOf("version" to version)
 
@@ -39,5 +24,3 @@ tasks {
         }
     }
 }
-
-kotlin.jvmToolchain(8)
