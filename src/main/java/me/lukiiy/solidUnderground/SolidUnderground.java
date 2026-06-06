@@ -100,7 +100,7 @@ public class SolidUnderground extends JavaPlugin {
         if (state == State.ACTIVE) return;
 
         state = State.INACTIVE;
-        worldTickTask = -1;
+        getServer().getScheduler().cancelTask(worldTickTask);
         startTime = 0;
         runMap.clear();
     }
