@@ -44,8 +44,8 @@ public class SolidUnderground extends JavaPlugin {
 
         state = State.ACTIVE;
         startTime = System.currentTimeMillis();
-        WorldServer nmsWorld = ((CraftWorld) world).getHandle();
 
+        WorldServer nmsWorld = ((CraftWorld) world).getHandle();
         Location hole = new Location(world, -25, 66, 21);
 
         nmsWorld.spawnMonsters = 3; // hard difficulty
@@ -94,6 +94,15 @@ public class SolidUnderground extends JavaPlugin {
                         return data != null && !data.inHole;
                     }).forEach(p -> p.damage(2));
         }, 20L, 20L); // every second
+    }
+
+    public void stop() {
+        if (state == State.ACTIVE) return;
+
+        state = State.INACTIVE;
+        worldTickTask = -1;
+        startTime = 0;
+        runMap.clear();
     }
 
     public void eliminate(Player player) {

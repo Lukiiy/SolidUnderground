@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RunData {
+    public boolean inHole;
     public Map<String, Long> times = new HashMap<>();
 
     public String serialize() {
