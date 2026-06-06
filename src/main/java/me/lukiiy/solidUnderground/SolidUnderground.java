@@ -14,7 +14,7 @@ import java.util.Map;
 public class SolidUnderground extends JavaPlugin {
     private static SolidUnderground instance = null;
 
-    private Map<Player, RunData> runMap = new HashMap<>();
+    private final Map<Player, RunData> runMap = new HashMap<>();
     private State state = State.INACTIVE;
 
     private long startTime = 0;
