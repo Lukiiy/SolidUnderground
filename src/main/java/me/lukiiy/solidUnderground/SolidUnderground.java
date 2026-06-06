@@ -62,6 +62,12 @@ public class SolidUnderground extends JavaPlugin {
         });
     }
 
+    public void eliminate(Player player) {
+        if (runMap.get(player) == null) return;
+
+        runMap.get(player).times.put("end", getElapsedTime());
+    }
+
     public State getState() {
         return state;
     }
@@ -84,5 +90,9 @@ public class SolidUnderground extends JavaPlugin {
 
         if (hours > 0) return String.format("%d:%02d:%02d", hours, minutes, seconds);
         else return String.format("%d:%02d", minutes, seconds);
+    }
+
+    public String getFormattedTime() {
+        return getFormattedTime(getElapsedTime());
     }
 }
