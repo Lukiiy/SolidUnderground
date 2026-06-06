@@ -69,4 +69,20 @@ public class SolidUnderground extends JavaPlugin {
     public long getStartTime() {
         return startTime;
     }
+
+    public long getElapsedTime() {
+        return System.currentTimeMillis() - startTime;
+    }
+
+    public String getFormattedTime(long time) {
+        if (time == 0) return "0:00";
+
+        long total = getElapsedTime() / 1000;
+        long hours = total / 3600;
+        long minutes = (total % 3600) / 60;
+        long seconds = total % 60;
+
+        if (hours > 0) return String.format("%d:%02d:%02d", hours, minutes, seconds);
+        else return String.format("%d:%02d", minutes, seconds);
+    }
 }
